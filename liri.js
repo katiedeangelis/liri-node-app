@@ -59,17 +59,22 @@ switch (process.argv[2]) {
         break;
     case "movie-this":
         var movie = process.argv[3];
+
+        if (movie === null || movie === undefined) {
+            movie = "Mr. Nobody"
+        }
+
         request("http://www.omdbapi.com/?apikey=" + keys.omdbKeys.key + "&t=" + movie, function (error, response, body) {
 
             if (!error && response.statusCode === 200) {
                 console.log("Title: " + JSON.parse(body).Title);
                 console.log("Year: " + JSON.parse(body).Year);
                 console.log("IMDB Rating: " + JSON.parse(body).Ratings[0].Value);
-                console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);   
-                console.log("Production Country: " + JSON.parse(body).Country);                
+                console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);
+                console.log("Production Country: " + JSON.parse(body).Country);
                 console.log("Language: " + JSON.parse(body).Language);
                 console.log("Plot: " + JSON.parse(body).Plot);
-                console.log("Actors: " + JSON.parse(body).Actors);                
+                console.log("Actors: " + JSON.parse(body).Actors);
             } else {
                 console.log(error)
             }
