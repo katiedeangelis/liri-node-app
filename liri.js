@@ -25,37 +25,8 @@ switch (process.argv[2]) {
     case "spotify-this-song":
         var song = process.argv[3];
 
-        if (song == null) {
-            spotify
-                .request('https://api.spotify.com/v1/tracks/0hrBpAOgrt8RXigk83LLNE')
-                .then(function (data) {
-                    var songInfo = data;
-                    console.log("Artist: " + songInfo.artists[0].name)
-                    console.log("Song Name: " + songInfo.name)
-                    console.log("Album: " + songInfo.album.name)
-                    console.log("Preview Song: " + songInfo.preview_url)
-                })
-                .catch(function (err) {
-                    console.error('Error occurred: ' + err);
-                });
-        } else {
-
-            spotify.search({
-                type: 'track',
-                query: song,
-                limit: 1
-            }, function (err, data) {
-                if (err) {
-                    return console.log('Error occurred: ' + err);
-                } else {
-                    var songInfo = data.tracks.items[0];
-                    console.log("Artist: " + songInfo.artists[0].name)
-                    console.log("Song Name: " + songInfo.name)
-                    console.log("Album: " + songInfo.album.name)
-                    console.log("Preview Song: " + songInfo.preview_url)
-                }
-            });
-        }
+        searchSong(song);
+        
         break;
     case "movie-this":
         var movie = process.argv[3];
@@ -83,4 +54,39 @@ switch (process.argv[2]) {
     default:
         console.log("Does not compute. Try again.");
         break;
+}
+
+function searchSong(song) {
+
+    if (song == null) {
+        spotify
+            .request('https://api.spotify.com/v1/tracks/0hrBpAOgrt8RXigk83LLNE')
+            .then(function (data) {
+                var songInfo = data;
+                console.log("Artist: " + songInfo.artists[0].name)
+                console.log("Song Name: " + songInfo.name)
+                console.log("Album: " + songInfo.album.name)
+                console.log("Preview Song: " + songInfo.preview_url)
+            })
+            .catch(function (err) {
+                console.error('Error occurred: ' + err);
+            });
+    } else {
+
+        spotify.search({
+            type: 'track',
+            query: song,
+            limit: 1
+        }, function (err, data) {
+            if (err) {
+                return console.log('Error occurred: ' + err);
+            } else {
+                var songInfo = data.tracks.items[0];
+                console.log("Artist: " + songInfo.artists[0].name)
+                console.log("Song Name: " + songInfo.name)
+                console.log("Album: " + songInfo.album.name)
+                console.log("Preview Song: " + songInfo.preview_url)
+            }
+        });
+    }
 }
